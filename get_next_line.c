@@ -6,7 +6,7 @@
 /*   By: osajide <osajide@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:20:11 by osajide           #+#    #+#             */
-/*   Updated: 2022/11/06 13:40:14 by osajide          ###   ########.fr       */
+/*   Updated: 2022/11/06 19:02:52 by osajide          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,22 @@ char *just_line(char *buffer)
 	int i;
 	char *line;
 
+	if (!buffer)
+		return (0);
 	i = 0;
-	if(*buffer == '\n')
-		buffer++;
 	//printf("BEFORE: %s\n", buffer);
 	while (buffer[i] && buffer[i]!= '\n')
 		i++;
 	line = malloc(i  + 2);
 	i = 0;
-	while (buffer[i] != '\n')
+	while (buffer[i] != '\n' && buffer[i])
 	{
 		line[i] = buffer[i];
 		i++;
 	}
 	//printf("AFTER: %s\n", buffer);
-	line[i++] = '\n';
+	if (buffer[i] == '\n' && buffer[i])
+		line[i++] = '\n';
 	line[i] = '\0';
 	
 	// free(buffer);
@@ -41,26 +42,26 @@ char *just_line(char *buffer)
 
 char *fremainer(char *buffer)
 {
-	int i;
-	char *buff;
-	char *remainer;
-
 	if (!buffer)
-	return 0;
-	if(*buffer == '\n')
-		buffer++;
-	i = 0;
-	remainer = ft_strchr(buffer, '\n');
-	buff = ft_strdup(remainer);
+		return (0);
+	char	*buff;
+	int	i;
+	int j;
+	i =0;
+	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
-	{ 
-		buff[i] = remainer[i];
+		i++;
+	if (!buffer[i])
+		return (0);
+	buff = malloc(ft_strlen(buffer) - i + 1);
+	i++;
+	while (buffer[i])
+	{
+		buff[j]= buffer[i];
+		j++;
 		i++;
 	}
-	buff[i] = '\0';
-	// printf("REST : %s\n",remainer);
-	// printf("BUFF: %s\n", buff);
-	// free(buffer);
+	buff[j] = 0;
 	return (buff);
 }
 
@@ -71,7 +72,9 @@ char *get_next_line(int fd)
 	char *s;
 	int i;
 	int readline;
-	
+
+	if (!buffer)
+		buffer = malloc(1);
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return 0;
 	i = 0;
@@ -80,28 +83,32 @@ char *get_next_line(int fd)
 	while(readline > 0 && !ft_strchr(s, '\n'))
 	{
 		readline = read(fd, s, BUFFER_SIZE);
-		//printf("S:%s\n", s);
-		if (readline == 0)
-			break;
+		printf("S:%s\n", s);
+		if (readline < 0)
+		{
+			free(s);
+			return (0);
+		}
 		printf("read:%d\n", readline);
-		// if (readline < 0)
-		// {
-		// 	free(s);
-		// 	return (NULL);
-		// }
+		if (readline < 0)
+		{
+			free(s);
+			return (NULL);
+		}
 		s[BUFFER_SIZE] = '\0';
-		printf("string readed: %s\n", s);
+		//printf("string readed: %s\n", s);
 		buffer = ft_strjoin(buffer, s);
-		//  if (ft_strchr(s, '\n'))
-		//  	break;
+		// if (ft_strchr(s, '\n'))
+		// 	break;
 	}
-	//free(s);
+	free(s);
 	//printf("BUFFER BEFORE: %s\n", buffer);
-	if (buffer == NULL)
-		return (NULL);
+	// if (buffer == NULL)
+	// 	return (NULL);
+	//line = just_line(buffer);
 	line = just_line(buffer);
-	//  printf("LINE: %s", line);
-	//  printf("BUFFER AFTER: %s\n", buffer);
+	//printf("LINE: %s", line);
+	//printf("BUFFER AFTER: %s\n", buffer);
 	buffer = fremainer(buffer);
 	//printf("BREMAIN: %s\n", buffer);
 	return (line);
@@ -114,8 +121,19 @@ int main()
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	// printf("%s", get_next_line(fd));
+
+	// char	*test = "hello\nhh\nxdcd\n";
+	// printf("%s\n",just_line(test));
+	// test = fremainer(test);
+	// //printf("%s\n",test);
+	// printf("%s\n",just_line(test));
+	// test = fremainer(test);
+	// printf("%s\n",test);
+	// printf("%s\n",just_line(test));
+	// test = fremainer(test);
+	// printf("%s\n",test);
+	// printf("%s\n",just_line(test));
 	
 	return (0);
 }
