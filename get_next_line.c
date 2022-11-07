@@ -6,7 +6,7 @@
 /*   By: osajide <osajide@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:20:11 by osajide           #+#    #+#             */
-/*   Updated: 2022/11/07 11:13:47 by osajide          ###   ########.fr       */
+/*   Updated: 2022/11/07 14:52:22 by osajide          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ char *get_next_line(int fd)
 	while(readline > 0 && !ft_strchr(s, '\n'))
 	{
 		readline = read(fd, s, BUFFER_SIZE);
-		printf("S:%s\n", s);
+		//printf("S:%s\n", s);
 		if (readline < 0)
 		{
 			free(s);
 			return (0);
 		}
-		printf("read:%d\n", readline);
+		//printf("read:%d\n", readline);
 		if (readline < 0)
 		{
 			free(s);
@@ -100,6 +100,7 @@ char *get_next_line(int fd)
 		buffer = ft_strjoin(buffer, s);
 		// if (ft_strchr(s, '\n'))
 		// 	break;
+		ft_bzero(s, ft_strlen(s));
 	}
 	free(s);
 	//printf("BUFFER BEFORE: %s\n", buffer);
@@ -117,6 +118,7 @@ char *get_next_line(int fd)
 int main()
 {	
 	int fd = open("text.txt", O_RDONLY);
+	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
