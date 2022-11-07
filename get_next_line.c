@@ -6,7 +6,7 @@
 /*   By: osajide <osajide@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 11:20:11 by osajide           #+#    #+#             */
-/*   Updated: 2022/11/06 19:04:24 by osajide          ###   ########.fr       */
+/*   Updated: 2022/11/07 11:13:47 by osajide          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int main()
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
-	// printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 
 	// char	*test = "hello\nhh\nxdcd\n";
 	// printf("%s\n",just_line(test));
